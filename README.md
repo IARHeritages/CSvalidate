@@ -22,6 +22,8 @@ In order to create the project in a PYBOSSA server, you have to run the followin
 pbs --credentials micropasts create_project
 ```
 
+**WARNING**: Be sure to have your virtualenv active. Use the source command, when you need it.
+
 
 **NOTE**: In order to use your credentials, create a file in your home folder named .pybossa.cfg and add there a section like this:
 
@@ -29,6 +31,7 @@ pbs --credentials micropasts create_project
 [micropasts]
 server: http://crowdsourced.micropasts.org
 apikey: yourkey
+
 ```
 
 ## Updating the project
