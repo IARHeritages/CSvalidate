@@ -241,7 +241,7 @@ function resetStyles(task) {
 
 
 function buildSummary(task) {
-    var friendly = {'brexit': 'Brexit', 'romanpast': 'Roman Past'};
+    var friendly = {'brexit': 'Brexit', 'romanpast': 'Roman past'};
     for(key in task.answer) {
         var li = $("<li/>");
         li.html("<strong>Is this article related to " + friendly[key] + "?</strong> " + task.answer[key]);
