@@ -39,11 +39,28 @@
 -->
 <div class="row skeleton"> <!-- Start Skeleton Row-->
     <div class="col-md-6 "><!-- Start of Question and Submission DIV (column) -->
-        <h1>Validate this article</h1>
-        <div id="article"></div>
+        <div class="step1">
+            <h1>Does this article mention the Roman past?</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+            <button class="btn btn-understood"><span id="i18n_understood">Understood</span></button>
+            <button class="step1 btn btn-answer" value='yes' style="display:none;"><span id="i18n_yes">Yes</span></button>
+            <button class="step1 btn btn-answer" value='no' style="display:none">No</button>
+        </div>
+
+        <div class="step2" style="display:none">
+            <h1>Does this article mention the Brexit?</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+            <button class="step2 btn btn-answer" value='yes'><span id="i18n_yes">Yes</span></button>
+            <button class="step2 btn btn-answer" value='no'>No</button>
+        </div>
+
+        <div class="step3" style="display:none">
+            <button class="step3 btn btn-answer"><span id="i18n_yes">Submit the answers</span></button>
+        </div>
+
     </div><!-- End of Question and Submission DIV (column) -->
     <div class="col-md-6"><!-- Start of Photo DIV (column) -->
-        <p>LATER</p>
+        <div id="article" class="embed-responsive embed-responsive-4by3"></div>
     </div><!-- End of Photo DIV (columnt) -->
 </div><!-- End of Skeleton Row -->
 
@@ -137,6 +154,9 @@ function loadUserProgress() {
 
 pybossa.taskLoaded(function(task, deferred) {
     if ( !$.isEmptyObject(task) ) {
+        task.step = 1;
+        task.answer = {'romanpast': "no",
+                       'brexit': "no",}
        deferred.resolve(task);
     }
     else {
@@ -151,25 +171,50 @@ pybossa.presentTask(function(task, deferred) {
         $('#task-id').html(task.id);
         var iframe = $("<iframe/>");
         iframe.attr("src", task.info.url);
+        iframe.attr("frameborder", "0");
+        iframe.addClass("embed-responsive-item");
+        iframe.css("width", "100%");
+        iframe.css("height", "500px");
         $("#article").html("").append(iframe);
 
-        $('.btn-answer').off('click').on('click', function(evt) {
+
+        $('.btn-understood').off('click').on('click', function(evt) {
+           $(".btn-understood").hide();
+           $(".step" + task.step + ".btn.btn-answer").show();
+        });
+
+        $('.step1.btn.btn-answer').off('click').on('click', function(evt) {
             var answer = $(this).attr("value");
             if (typeof answer != 'undefined') {
-                //console.log(answer);
-                pybossa.saveTask(task.id, answer).done(function() {
-                    deferred.resolve();
-                });
-                $("#loading").fadeIn(500);
-                //if ($("#disqus_thread").is(":visible")) {
-                //    $('#disqus_thread').toggle();
-                //    $('.btn-disqus').toggle();
-                //}
+                console.log(answer);
+                if (answer === 'yes') {
+                    task.answer.romanpast = 'yes'
+                }
+                console.log(task.answer);
+                $(".step1").hide();
+                $(".step2").show();
             }
             else {
                 $("#error").show();
             }
         });
+
+        $('.step2.btn.btn-answer').off('click').on('click', function(evt) {
+            var answer = $(this).attr("value");
+            if (typeof answer != 'undefined') {
+                console.log(answer);
+                if (answer === 'yes') {
+                    task.answer.brexit= 'yes'
+                }
+                console.log(task.answer);
+                $(".step2").hide();
+                $(".step3").show();
+            }
+            else {
+                $("#error").show();
+            }
+        });
+
         $("#loading").hide();
     }
     else {
