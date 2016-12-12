@@ -1,3 +1,20 @@
+<!-- Modal for surveys -->
+<div id="survey" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Survey</h4>
+      </div>
+      <div class="modal-body" style="display: flex; justify-content: center;">
+          <!-- Change the link to google form of your choice-->
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdeuBa0z7kKbEzkVw2UK89u1pa61klSVJuScAUJUlFR7L2Q9g/viewform?embedded=true" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 <!-- Success and Error Messages for the user --> 
 <div class="row">
     <div class="col-md-6 col-md-offset-2" style="height:50px">
@@ -87,6 +104,31 @@
 <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 <script>
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}
+
+
 // Default language
 var userLocale = "en";
 // Translations
@@ -144,18 +186,29 @@ function i18n_translate() {
 
 function loadUserProgress() {
     pybossa.userProgress('csvalidate').done(function(data){
-        var pct = Math.round((data.done*100)/data.total);
-        $("#progress").css("width", pct.toString() +"%");
-        $("#progress").attr("title", pct.toString() + "% completed!");
-        $("#progress").tooltip({'placement': 'left'}); 
-        $("#total").text(data.total);
-        $("#done").text(data.done);
+        var cookie = getCookie("understoodbtn");
+        if (cookie === "") {
+            if (data.done >= 2) {
+                setCookie("understoodbtn", "yes", 30);
+            }
+        }
+
+        if (data.done === 1 ) {
+            $('#survey').modal('show');
+        }
     });
 }
 
 pybossa.taskLoaded(function(task, deferred) {
     if ( !$.isEmptyObject(task) ) {
         task.step = 1;
+        var cookie = getCookie("understoodbtn");
+        if (cookie === 'yes') {
+            task.showunderstood = false;
+        }
+        else {
+            task.showunderstood = true;
+        }
         task.answer = {'romanpast': "no",
                        'brexit': "no",}
        deferred.resolve(task);
@@ -166,10 +219,15 @@ pybossa.taskLoaded(function(task, deferred) {
 });
 
 
-function resetStyles() {
+function resetStyles(task) {
     $(".step1").show();
     $(".btn-step1").hide();
-    $(".btn-understood").show();
+    if (task.showunderstood) {
+        $(".btn-understood").show();
+    }
+    else {
+        $(".btn-understood").hide();
+    }
     $(".step2").hide();
     $(".btn-step2").hide();
     $(".step3").hide();
@@ -178,9 +236,10 @@ function resetStyles() {
 
 pybossa.presentTask(function(task, deferred) {
     if ( !$.isEmptyObject(task) ) {
+        console.log(task.showunderstood);
         loadUserProgress();
         //i18n_translate();
-        resetStyles();
+        resetStyles(task);
         $('#task-id').html(task.id);
         var iframe = $("<iframe/>");
         iframe.attr("src", task.info.url);
@@ -195,6 +254,12 @@ pybossa.presentTask(function(task, deferred) {
            $(".btn-understood").hide();
            $(".btn.btn-answer" + ".btn-step" + task.step).show();
         });
+        console.log("daniel");
+        console.log(task.showunderstood);
+
+        if (!task.showunderstood) {
+            $(".btn-step1").show();
+        }
 
         $('.btn.btn-answer.btn-step1').off('click').on('click', function(evt) {
             var answer = $(this).attr("value");
@@ -206,7 +271,12 @@ pybossa.presentTask(function(task, deferred) {
                 console.log(task.answer);
                 $(".step1").hide();
                 $(".step2").show();
-                $(".btn-understood").show();
+                if (task.showunderstood) {
+                    $(".btn-understood").show();
+                }
+                else {
+                    $(".btn-step2").show();
+                }
                 task.step += 1;
             }
             else {
