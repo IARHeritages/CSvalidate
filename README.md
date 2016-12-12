@@ -34,7 +34,7 @@ apikey: yourkey
 The previous section created the project, but none of the sections like the template, tutorial, long description or result pages have been populated. To do it, just run the following command:
 
 ```
-pbs --credentials YOURCREDENTIALS update_project
+pbs --credentials micropasts update_project
 ```
 
 While this will work every time you run it, you can save a lot of time by telling pbs to watch for changes in any of those files, so it automatically updates the project for you when you save new changes to any of these files:
@@ -45,7 +45,18 @@ While this will work every time you run it, you can save a lot of time by tellin
 *  long_description.md
 
 ```
-pbs --credentials YOURCREDENTIALS update_project --watch
+pbs --credentials micropasts update_project --watch
 ```
+
+## Adding tasks to the project
+
+You can use any of the PYBOSSA CSV or Google Spreadsheet importers, or if you prefer you can use the command line tool to import a CSV or JSON file with tasks for your project:
+
+```
+pbs --credentials micropasts add_tasks --tasks-file=example.csv --tasks-type=csv
+
+```
+
+**NOTE**: You can configure the priority and redundancy also, using the command line, check the help.
 
 
