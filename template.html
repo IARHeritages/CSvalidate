@@ -73,6 +73,10 @@
         </div>
 
         <div class="step3" style="display:none">
+            <h3>Summary</h3>
+            <p>Your chosen answers have been:</p>
+            <ul id="list">
+            </ul>
             <button class="btn btn-answer btn-step3"><span id="i18n_yes">Submit the answers</span></button>
         </div>
 
@@ -235,6 +239,15 @@ function resetStyles(task) {
     $(".btn-step3").hide();
 }
 
+
+function buildSummary(task) {
+    for(key in task.answer) {
+        var li = $("<li/>");
+        li.html("<strong>Is this article related to " + key + "?</strong> " + task.answer[key]);
+        $(#list).append(li);
+    }
+}
+
 pybossa.presentTask(function(task, deferred) {
     if ( !$.isEmptyObject(task) ) {
         console.log(task.showunderstood);
@@ -296,6 +309,7 @@ pybossa.presentTask(function(task, deferred) {
                 console.log(task.answer);
                 task.step += 1;
                 $(".step2").hide();
+                buildSummary(task);
                 $(".step3").show();
                 $(".btn-step3").show();
             }
