@@ -79,6 +79,7 @@
     </div><!-- End of Question and Submission DIV (column) -->
     <div class="col-md-6"><!-- Start of Photo DIV (column) -->
         <div id="article" class="embed-responsive embed-responsive-4by3"></div>
+        <a id="newtab" target="_blank" href="#" class="btn btn-default">Open in a new tab</a>
     </div><!-- End of Photo DIV (columnt) -->
 </div><!-- End of Skeleton Row -->
 
@@ -248,6 +249,7 @@ pybossa.presentTask(function(task, deferred) {
         iframe.css("width", "100%");
         iframe.css("height", "500px");
         $("#article").html("").append(iframe);
+        $("#newtab").attr("href", task.info.url);
 
 
         $('.btn-understood').off('click').on('click', function(evt) {
