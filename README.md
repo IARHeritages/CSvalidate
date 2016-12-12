@@ -25,9 +25,11 @@ pbs --credentials micropasts create_project
 
 **NOTE**: In order to use your credentials, create a file in your home folder named .pybossa.cfg and add there a section like this:
 
+```
 [micropasts]
 server: http://crowdsourced.micropasts.org
 apikey: yourkey
+```
 
 ## Updating the project
 
