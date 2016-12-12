@@ -81,7 +81,7 @@ Once you have the Google Form ready, go to the responses tab, and check the "Vie
 
 ![Imgur](http://i.imgur.com/z71C3Aq.png)
 
-That will open the spreadsheet. Go to the sharing options, and make it public for anyone having the link: Anyone with the link can view. Then copy that link, and paste it in the PYBOSSA Google Spreadsheet importer. That will import the submitted responses.
+That will open the spreadsheet. Go to the sharing options, and make it public for anyone having the link: click in Get shareable link. Then, choose: Anyone with the link can view.  Then copy that link, and paste it in the PYBOSSA Google Spreadsheet importer. That will import the submitted responses.
 
 **NOTE**: If you can set up an auto-importer, you will be able to automatically import data into your project thanks to PYBOSSA. Go to task settings, auto-importers, choose the Google Spreadsheet and paste the URL. Depending if you are a regular user or a pro, the project will get the new responses every 24 hours or 10 minutes.
 
