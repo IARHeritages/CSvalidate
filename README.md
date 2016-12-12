@@ -53,15 +53,36 @@ While this will work every time you run it, you can save a lot of time by tellin
 pbs --credentials micropasts update_project --watch
 ```
 
-## Adding tasks to the project
+## Adding tasks to the project from a CSV file
 
-You can use any of the PYBOSSA CSV or Google Spreadsheet importers, or if you prefer you can use the command line tool to import a CSV or JSON file with tasks for your project:
+You can use the command line tool to import a CSV or JSON file with tasks for your project:
 
 ```
 pbs --credentials micropasts add_tasks --tasks-file=example.csv --tasks-type=csv
 
 ```
 
+It is really important that the column name with the URL for the page or web link, should be named **url**, otherwise the template will fail. 
+
 **NOTE**: You can configure the priority and redundancy also, using the command line, check the help.
+
+## Adding tasks from a Google Form
+
+Create a google form, and add as many questions as you want. It is really important that each question is just one word in lowercase, this will ensure that we will be able to render them properly in the template.
+
+For this specific project the only required field is the **URL** of the page, so the Google form should have one question with a name: url.
+
+See for example this one: https://goo.gl/forms/UD4RAkA9a6FDQpt73
+
+
+Be sure to configure the Form to save the responses in a Google Spreadsheet, as we will be using that file to import the submitted responses as tasks for the current project.
+
+Once you have the Google Form ready, go to the responses tab, and check the "View responses in Sheets":
+
+[Imgur](http://i.imgur.com/z71C3Aq.png)
+
+That will open the spreadsheet. Go to the sharing options, and make it public for anyone having the link: Anyone with the link can view. Then copy that link, and paste it in the PYBOSSA Google Spreadsheet importer. That will import the submitted responses.
+
+**NOTE**: If you can set up an auto-importer, you will be able to automatically import data into your project thanks to PYBOSSA. Go to task settings, auto-importers, choose the Google Spreadsheet and paste the URL. Depending if you are a regular user or a pro, the project will get the new responses every 24 hours or 10 minutes.
 
 
