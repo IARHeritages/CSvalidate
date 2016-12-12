@@ -79,7 +79,7 @@ Be sure to configure the Form to save the responses in a Google Spreadsheet, as 
 
 Once you have the Google Form ready, go to the responses tab, and check the "View responses in Sheets":
 
-[Imgur](http://i.imgur.com/z71C3Aq.png)
+![Imgur](http://i.imgur.com/z71C3Aq.png)
 
 That will open the spreadsheet. Go to the sharing options, and make it public for anyone having the link: Anyone with the link can view. Then copy that link, and paste it in the PYBOSSA Google Spreadsheet importer. That will import the submitted responses.
 
