@@ -77,6 +77,9 @@
             <p>Your chosen answers have been:</p>
             <ul id="list">
             </ul>
+            <h4>Any comments?</h4>
+            <textarea id="comments" rows="4" cols="45">
+            </textarea>
             <button class="btn btn-answer btn-step3"><span id="i18n_yes">Submit the answers</span></button>
         </div>
 
@@ -216,7 +219,8 @@ pybossa.taskLoaded(function(task, deferred) {
             task.showunderstood = true;
         }
         task.answer = {'romanpast': "no",
-                       'brexit': "no",}
+            'brexit': "no",
+            'comments': ""}
        deferred.resolve(task);
     }
     else {
@@ -326,6 +330,12 @@ pybossa.presentTask(function(task, deferred) {
                     deferred.resolve();
                 });
         });
+
+        $("#comments").on("change paste keyup", function(){
+            task.answer.comments = $(this).val();
+            //console.log(task.answer);
+        });
+
 
         $("#loading").hide();
     }
